@@ -27,3 +27,12 @@ resource "aws_subnet" "private_subnet" {
     Name = "private_subnet"
   }
 }
+
+resource "aws_internet_gateway" "llp_test_igw" {
+  vpc_id = aws_vpc.llptest-aws-vpc.id
+
+  tags = {
+    Name = "internet gateway"
+  }
+}
+
