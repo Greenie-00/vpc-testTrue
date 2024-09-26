@@ -15,3 +15,8 @@ variable "aws_secret_key" {
   description = "Secret Key as a workaround."
   default = ""
 }
+
+variable "aws_vpc_cidr_block" {
+  type = string
+  default = ""
+}
