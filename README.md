@@ -4,10 +4,9 @@
 
 main.tf : contains the vpc resource  definition
 provider.tf : cloud provider data
-vars.tf : variable declaration file
+variables.tf : variable declaration file
+outputs.tf : outputs from run
 
 
-
-# for clean up 
-
+# for clean up
 terraform destroy
