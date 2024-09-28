@@ -1,3 +1,3 @@
 output "aws_vpc" {
-  value = my-vpc.id
+  value = my-vpc
 }
