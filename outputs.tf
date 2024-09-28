@@ -1,3 +1,3 @@
 output "aws_vpc" {
-  value = my-vpc.id
+  value = module.my-vpc.aws_vpc_id
 }
