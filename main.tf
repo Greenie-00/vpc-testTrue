@@ -1,29 +1,29 @@
 # VPC
-resource "aws_vpc" "llptest-aws-vpc" {
+resource "aws_vpc" "grantest-aws-vpc" {
   cidr_block           = var.aws_vpc_cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true
   instance_tenancy     = "default"
 
   tags = {
-    Name        = "llptest-aws-vpc"
+    Name        = "grantest-aws-vpc"
     Environment = "test"
   }
 }
 
 # Internet Gateway
-resource "aws_internet_gateway" "llp_test_igw" {
-  vpc_id = aws_vpc.llptest-aws-vpc.id
+resource "aws_internet_gateway" "grantest_igw" {
+  vpc_id = aws_vpc.grantest-aws-vpc.id
 
   tags = {
-    Name        = "llptest-igw"
+    Name        = "grantest-igw"
     Environment = "test"
   }
 }
 
 # Public Subnets
 resource "aws_subnet" "public_subnet_1" {
-  vpc_id                  = aws_vpc.llptest-aws-vpc.id
+  vpc_id                  = aws_vpc.grantest-aws-vpc.id
   cidr_block              = var.aws_public_subnet_1_cidr
   availability_zone       = var.availability_zones[0]
   map_public_ip_on_launch = true
@@ -36,7 +36,7 @@ resource "aws_subnet" "public_subnet_1" {
 }
 
 resource "aws_subnet" "public_subnet_2" {
-  vpc_id                  = aws_vpc.llptest-aws-vpc.id
+  vpc_id                  = aws_vpc.grantest-aws-vpc.id
   cidr_block              = var.aws_public_subnet_2_cidr
   availability_zone       = var.availability_zones[1]
   map_public_ip_on_launch = true
@@ -50,7 +50,7 @@ resource "aws_subnet" "public_subnet_2" {
 
 # Private Subnets
 resource "aws_subnet" "private_subnet_1" {
-  vpc_id            = aws_vpc.llptest-aws-vpc.id
+  vpc_id            = aws_vpc.grantest-aws-vpc.id
   cidr_block        = var.aws_private_subnet_1_cidr
   availability_zone = var.availability_zones[0]
 
@@ -62,7 +62,7 @@ resource "aws_subnet" "private_subnet_1" {
 }
 
 resource "aws_subnet" "private_subnet_2" {
-  vpc_id            = aws_vpc.llptest-aws-vpc.id
+  vpc_id            = aws_vpc.grantest-aws-vpc.id
   cidr_block        = var.aws_private_subnet_2_cidr
   availability_zone = var.availability_zones[1]
 
@@ -76,7 +76,7 @@ resource "aws_subnet" "private_subnet_2" {
 # Elastic IPs for NAT Gateways
 resource "aws_eip" "nat_gateway_1_eip" {
   domain     = "vpc"
-  depends_on = [aws_internet_gateway.llp_test_igw]
+  depends_on = [aws_internet_gateway.grantest_igw]
 
   tags = {
     Name        = "nat-gateway-1-eip"
@@ -86,7 +86,7 @@ resource "aws_eip" "nat_gateway_1_eip" {
 
 resource "aws_eip" "nat_gateway_2_eip" {
   domain     = "vpc"
-  depends_on = [aws_internet_gateway.llp_test_igw]
+  depends_on = [aws_internet_gateway.grantest_igw]
 
   tags = {
     Name        = "nat-gateway-2-eip"
@@ -104,7 +104,7 @@ resource "aws_nat_gateway" "nat_gateway_1" {
     Environment = "test"
   }
 
-  depends_on = [aws_internet_gateway.llp_test_igw]
+  depends_on = [aws_internet_gateway.grantest_igw]
 }
 
 resource "aws_nat_gateway" "nat_gateway_2" {
@@ -116,16 +116,16 @@ resource "aws_nat_gateway" "nat_gateway_2" {
     Environment = "test"
   }
 
-  depends_on = [aws_internet_gateway.llp_test_igw]
+  depends_on = [aws_internet_gateway.grantest_igw]
 }
 
 # Route Tables
 resource "aws_route_table" "public_route_table" {
-  vpc_id = aws_vpc.llptest-aws-vpc.id
+  vpc_id = aws_vpc.grantest-aws-vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.llp_test_igw.id
+    gateway_id = aws_internet_gateway.grantest_igw.id
   }
 
   tags = {
@@ -245,7 +245,7 @@ resource "aws_flow_log" "vpc_flow_log" {
   iam_role_arn    = aws_iam_role.vpc_flow_log_role.arn
   log_destination = aws_cloudwatch_log_group.vpc_flow_log_group.arn
   traffic_type    = "ALL"
-  vpc_id          = aws_vpc.llptest-aws-vpc.id
+  vpc_id          = aws_vpc.grantest-aws-vpc.id
 
   tags = {
     Name        = "vpc-flow-logs"
